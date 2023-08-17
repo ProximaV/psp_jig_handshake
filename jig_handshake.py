@@ -226,7 +226,7 @@ def main():
 
         payload=AES.new(go_key1, AES.MODE_CBC, bytearray(0x10)).decrypt(screq[0x8:0x28])
         print('Decrypted result: ' + payload.hex().upper())
-        payload91 = payload[8:0x10] + payload[0:8]
+        payload91 = payload[8:0x10] + payload[0:8] + payload[0x10:0x20]
         if payload[0x10:0x20] == go_secret:
             print("Go Handshake Request is valid")
         else:
