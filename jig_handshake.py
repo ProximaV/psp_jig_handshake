@@ -226,13 +226,14 @@ def main():
 
         payload=AES.new(go_key1, AES.MODE_CBC, bytearray(0x10)).decrypt(screq[0x8:0x28])
         print('Decrypted result: ' + payload.hex().upper())
+        payload91 = payload[8:0x10] + payload[0:8]
         if payload[0x10:0x20] == go_secret:
             print("Go Handshake Request is valid")
         else:
             print("Invalid request from Syscon")
             return
-        resp2 = AES.new(go_key2, AES.MODE_CBC, bytearray(0x10)).encrypt(payload[0:0x20])
-        print('<- Jig Response 91: 2A 06 2001000082828282' + resp2.hex().upper())
+        resp2 = AES.new(go_key2, AES.MODE_CBC, bytearray(0x10)).decrypt(payload91)
+        print('<- Jig Response 91: 2A 06 2001000682828282' + resp2.hex().upper())
     
 if __name__ == "__main__":
     main()
